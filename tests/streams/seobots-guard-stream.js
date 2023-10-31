@@ -1,9 +1,8 @@
 'use strict';
-const assert = require('assert');
+const assert = require('node:assert');
 const sinon = require('sinon');
-const util = require('util');
-const setTimeoutPromise = util.promisify(setTimeout);
-const EventEmitter = require('events').EventEmitter;
+const { setTimeout } = require('node:timers/promises');
+const { EventEmitter } = require('node:events');
 
 const BotGuardStream = require('../../lib/streams/seobots-guard-stream');
 
@@ -61,16 +60,16 @@ describe('SeoBotsGuardStream', () => {
             st.addFragment(fragment1);
             st.addFragment(fragment2);
 
-            setTimeoutPromise(20)
+            setTimeout(20)
                 .then(() => fragment1.emit('response'))
-                .then(() => setTimeoutPromise(20))
+                .then(() => setTimeout(20))
                 .then(() => {
                     assert.equal(resStub.statusCode, 0);
                     assert(resStubSpy.notCalled);
                     fragment2.emit('response');
                     bothResponded = true;
                 })
-                .then(() => setTimeoutPromise(20))
+                .then(() => setTimeout(20))
                 .then(() => st.end())
                 .catch(e => done(e));
         });
@@ -104,15 +103,15 @@ describe('SeoBotsGuardStream', () => {
             st.statusCode = 200;
             st.writeHead(200, { a: 'b' });
 
-            setTimeoutPromise(20)
+            setTimeout(20)
                 .then(() => fragment1.emit('response'))
-                .then(() => setTimeoutPromise(20))
+                .then(() => setTimeout(20))
                 .then(() => {
                     fragment2.emit('error');
                     fragment3.emit('error');
                     st.write(Buffer.from('some test data'));
                 })
-                .then(() => setTimeoutPromise(20))
+                .then(() => setTimeout(20))
                 .then(() => st.end())
                 .catch(e => done(e));
         });

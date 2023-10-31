@@ -13,7 +13,7 @@ const tailor = new Tailor({
 // Root Server
 http.createServer((req, res) => {
     tailor.requestHandler(req, res);
-}).listen(8080, function() {
+}).listen(8080, function () {
     console.log('Tailor server listening on port 8080');
 });
 
@@ -23,6 +23,6 @@ http.createServer((req, res) => {
         'Content-Type': 'text/html'
     });
     res.end('<div>Fragment 1</div>');
-}).listen(8081, function() {
+}).listen(8081, function () {
     console.log('Fragment Server listening on port 8081');
 });

@@ -2,7 +2,7 @@
 
 const assert = require('assert');
 const parse5 = require('parse5');
-const adapter = parse5.treeAdapters.htmlparser2;
+const adapter = require('parse5-htmlparser2-tree-adapter');
 const CustomSerializer = require('../lib/serializer');
 
 describe('Serializer', () => {
