@@ -1,5 +1,13 @@
 # Tailor Changelog
 
+# 8.0.0
+* [#28](https://github.com/namecheap/error-extender/pull/1) support nodejs v20
+  * update dependencies
+  * align CI
+  * fix lint errors
+  * fix incompatibilities
+  * (**breaking change**) Drop nodejs version < 16
+
 # 7.0.0
 * [#27](https://github.com/StyleT/tailorx/pull/27) CI for Node.js 14
 * [#26](https://github.com/StyleT/tailorx/pull/27) (**breaking change**) simplified error handling of `fetchContext(request)` function

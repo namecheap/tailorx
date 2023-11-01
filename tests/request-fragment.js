@@ -20,9 +20,7 @@ describe('requestFragment', () => {
     });
 
     it('Should request fragment using http protocol', done => {
-        nock('http://fragment')
-            .get('/')
-            .reply(200, 'HTTP');
+        nock('http://fragment').get('/').reply(200, 'HTTP');
         requestFragment('http://fragment/', fragmentAttrb, {
             headers: {}
         }).then(response => {
@@ -47,9 +45,7 @@ describe('requestFragment', () => {
 
         beforeEach(() => {
             requestSpy = sinon.spy(https, 'request');
-            nock('https://fragment')
-                .get('/')
-                .reply(200, 'HTTPS');
+            nock('https://fragment').get('/').reply(200, 'HTTPS');
         });
 
         afterEach(() => {
@@ -114,9 +110,7 @@ describe('requestFragment', () => {
     });
 
     it('Should reject promise and respond with error for status code >500', done => {
-        nock('http://fragment')
-            .get('/')
-            .reply(500, 'Internal Server Error');
+        nock('http://fragment').get('/').reply(500, 'Internal Server Error');
         requestFragment('http://fragment/', fragmentAttrb, { headers: {} })
             .catch(err => {
                 assert.equal(
@@ -128,9 +122,7 @@ describe('requestFragment', () => {
     });
 
     it('Should resolve promise for primary fragment with non 2xx response', done => {
-        nock('http://fragment')
-            .get('/')
-            .reply(300, 'Redirect');
+        nock('http://fragment').get('/').reply(300, 'Redirect');
         requestFragment(
             'http://fragment/',
             { ...fragmentAttrb, primary: true },
@@ -143,9 +135,7 @@ describe('requestFragment', () => {
     });
 
     it('Should reject promise for non primary fragment with non 2xx response', done => {
-        nock('http://fragment')
-            .get('/')
-            .reply(300, 'Redirect');
+        nock('http://fragment').get('/').reply(300, 'Redirect');
         requestFragment(
             'http://fragment/',
             { ...fragmentAttrb, primary: false },
@@ -163,7 +153,7 @@ describe('requestFragment', () => {
     it('Should timeout when the fragment is not reachable', done => {
         nock('http://fragment')
             .get('/')
-            .socketDelay(1001)
+            .delayConnection(1001)
             .reply(200, 'hello');
         requestFragment('http://fragment/', fragmentAttrb, { headers: {} })
             .catch(err => {

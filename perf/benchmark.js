@@ -99,6 +99,7 @@ const fragment = spawn('node', ['perf/fragment-server.js']);
 // Load testing
 const worker = spawn('node', ['perf/loadtest.js']);
 worker.stdout.pipe(process.stdout);
+worker.stderr.pipe(process.stderr);
 
 worker.on('close', () => {
     console.log(

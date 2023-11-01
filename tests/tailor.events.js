@@ -38,9 +38,7 @@ describe('Tailor events', () => {
 
     it('forwards `fragment:start(request, fragment)` event from a fragment', done => {
         const onFragmentStart = sinon.spy();
-        nock('https://fragment')
-            .get('/')
-            .reply(200, 'hello');
+        nock('https://fragment').get('/').reply(200, 'hello');
         mockTemplate.returns('<fragment src="https://fragment">');
         tailor.on('fragment:start', onFragmentStart);
         http.get('http://localhost:8080/template', response => {
@@ -55,9 +53,7 @@ describe('Tailor events', () => {
 
     it('emits `start(request)` event', done => {
         const onStart = sinon.spy();
-        nock('https://fragment')
-            .get('/')
-            .reply(200, 'hello');
+        nock('https://fragment').get('/').reply(200, 'hello');
         mockTemplate.returns('<fragment src="https://fragment">');
         tailor.on('start', onStart);
         http.get('http://localhost:8080/template', response => {
@@ -118,9 +114,7 @@ describe('Tailor events', () => {
             res.statusCode = 500;
             res.end('error response');
         });
-        nock('https://fragment')
-            .get('/')
-            .reply(500);
+        nock('https://fragment').get('/').reply(500);
         mockTemplate.returns(
             '<fragment id="tst_fragment" primary src="https://fragment">'
         );

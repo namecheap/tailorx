@@ -1,16 +1,15 @@
 {
-    "parser": "babel-eslint",
+    "parser": "@babel/eslint-parser",
     "parserOptions": {
-        "sourceType": "script"
+        "sourceType": "script",
+        "requireConfigFile": false
     },
     "env": {
         "browser": false,
         "es2020": true,
         "node": true
     },
-    "plugins": [
-        "prettier"
-    ],
+    "plugins": ["prettier"],
     "rules": {
         "curly": 2,
         "no-underscore-dangle": 0,
@@ -25,10 +24,13 @@
         "no-lonely-if": 2,
         "quotes": [0, true, "single"],
         "strict": [2, "global"],
-        "prettier/prettier": [2, {
-            "singleQuote": true,
-            "tabWidth": 4
-        }]
+        "prettier/prettier": [
+            2,
+            {
+                "singleQuote": true,
+                "tabWidth": 4
+            }
+        ]
     },
     "globals": {
         "require": false,

@@ -16,7 +16,7 @@ describe('Transform', () => {
         serialize() {}
     }
 
-    const mockSerializer = sinon.spy(function() {
+    const mockSerializer = sinon.spy(function () {
         return sinon.createStubInstance(MockSerializer);
     });
     const handleTags = ['x-tag'];

@@ -135,13 +135,9 @@ describe('Tailor', () => {
         });
 
         it('should stream content from http and https fragments', done => {
-            nock('https://fragment')
-                .get('/1')
-                .reply(200, 'hello');
+            nock('https://fragment').get('/1').reply(200, 'hello');
 
-            nock('http://fragment:9000')
-                .get('/2')
-                .reply(200, 'world');
+            nock('http://fragment:9000').get('/2').reply(200, 'world');
 
             mockTemplate.returns(
                 '<fragment id="f-1" src="https://fragment/1"></fragment>' +
@@ -167,9 +163,7 @@ describe('Tailor', () => {
 
         // TODO: add async fragments support
         it('should support async fragments', done => {
-            nock('https://fragment')
-                .get('/1')
-                .reply(200, 'hello');
+            nock('https://fragment').get('/1').reply(200, 'hello');
 
             mockTemplate.returns(
                 '<fragment src="https://fragment/1" async></fragment>'
@@ -194,9 +188,7 @@ describe('Tailor', () => {
         });
 
         it('should support script based fragments for inserting in head', done => {
-            nock('https://fragment')
-                .get('/yes')
-                .reply(200, 'yes');
+            nock('https://fragment').get('/yes').reply(200, 'yes');
 
             mockTemplate.returns(
                 '<script type="fragment" src="https://fragment/yes"></script>'
@@ -218,9 +210,7 @@ describe('Tailor', () => {
         });
 
         it('should support fragments with "forward-querystring" attribute', done => {
-            nock('https://fragment')
-                .get('/1?a=3&b=2')
-                .reply(200, 'hello');
+            nock('https://fragment').get('/1?a=3&b=2').reply(200, 'hello');
 
             mockTemplate.returns(
                 '<fragment src="https://fragment/1?a=3" forward-querystring></fragment>'
@@ -476,9 +466,7 @@ describe('Tailor', () => {
         });
 
         it('should disable browser cache', done => {
-            nock('https://fragment')
-                .get('/1')
-                .reply(200, 'hello');
+            nock('https://fragment').get('/1').reply(200, 'hello');
 
             mockTemplate.returns(
                 '<fragment src="https://fragment/1"></fragment>'
@@ -501,12 +489,9 @@ describe('Tailor', () => {
                 mockTemplate.reset();
             });
             it('should preload external module loader if fragment is present', done => {
-                nock('https://fragment')
-                    .get('/1')
-                    .reply(200, 'non-primary', {
-                        Link:
-                            '<http://non-primary>; rel="stylesheet",<http://non-primary>; rel="fragment-script"'
-                    });
+                nock('https://fragment').get('/1').reply(200, 'non-primary', {
+                    Link: '<http://non-primary>; rel="stylesheet",<http://non-primary>; rel="fragment-script"'
+                });
 
                 mockTemplate.returns(
                     '<fragment src="https://fragment/1"></fragment>'
@@ -568,12 +553,9 @@ describe('Tailor', () => {
                 });
 
                 it('should not preload primary fragment assets for header Link', done => {
-                    nock('https://fragment')
-                        .get('/2')
-                        .reply(200, 'primary', {
-                            Link:
-                                '<http://primary>; rel="stylesheet",<http://primary>; rel="fragment-script"'
-                        });
+                    nock('https://fragment').get('/2').reply(200, 'primary', {
+                        Link: '<http://primary>; rel="stylesheet",<http://primary>; rel="fragment-script"'
+                    });
 
                     mockTemplate.returns(
                         '<fragment primary src="https://fragment/2"></fragment>'
@@ -591,12 +573,9 @@ describe('Tailor', () => {
             });
 
             it('should not send crossorigin in Link headers for same origin scripts', done => {
-                nock('http://fragment')
-                    .get('/')
-                    .reply(200, 'primary', {
-                        Link:
-                            '<http://localhost:8080>; rel="stylesheet",<http://localhost:8080>; rel="fragment-script"'
-                    });
+                nock('http://fragment').get('/').reply(200, 'primary', {
+                    Link: '<http://localhost:8080>; rel="stylesheet",<http://localhost:8080>; rel="fragment-script"'
+                });
 
                 mockTemplate.returns(
                     '<fragment primary src="http://fragment/"></fragment>'
@@ -651,8 +630,7 @@ describe('Tailor', () => {
                     nock('https://fragment')
                         .get('/1')
                         .reply(200, 'non-primary', {
-                            Link:
-                                '<http://non-primary>; rel="stylesheet",<http://non-primary>; rel="fragment-script"'
+                            Link: '<http://non-primary>; rel="stylesheet",<http://non-primary>; rel="fragment-script"'
                         });
 
                     mockTemplate.returns(
@@ -676,8 +654,7 @@ describe('Tailor', () => {
                     nock('https://fragment')
                         .get('/1')
                         .reply(200, 'non-primary', {
-                            Link:
-                                '<http://primary>; rel="stylesheet",<http://primary>; rel="fragment-script"'
+                            Link: '<http://primary>; rel="stylesheet",<http://primary>; rel="fragment-script"'
                         });
 
                     mockTemplate.returns(
@@ -703,8 +680,7 @@ describe('Tailor', () => {
                     nock('https://fragment')
                         .get('/1')
                         .reply(200, 'non-primary', {
-                            Link:
-                                '<http://non-primary>; rel="stylesheet",<http://non-primary>; rel="fragment-script"'
+                            Link: '<http://non-primary>; rel="stylesheet",<http://non-primary>; rel="fragment-script"'
                         });
 
                     mockTemplate.returns(
@@ -733,10 +709,10 @@ describe('Tailor', () => {
         it('should set timeout for a fragment request', done => {
             nock('https://fragment')
                 .get('/1')
-                .socketDelay(101)
+                .delayConnection(101)
                 .reply(200, 'hello')
                 .get('/2')
-                .socketDelay(3001)
+                .delayConnection(3001)
                 .reply(200, 'world');
 
             mockTemplate.returns(
@@ -757,7 +733,7 @@ describe('Tailor', () => {
         it('should return 500 in case of primary timeout', done => {
             nock('https://fragment')
                 .get('/1')
-                .socketDelay(101)
+                .delayConnection(101)
                 .reply(200, 'hello');
 
             mockTemplate.returns(
@@ -774,12 +750,9 @@ describe('Tailor', () => {
 
     describe('Link::Tailor: ', () => {
         it('should insert link to css from fragment link header', done => {
-            nock('https://fragment')
-                .get('/1')
-                .reply(200, 'hello', {
-                    Link:
-                        '<http://link>; rel="stylesheet",<http://link2>; rel="fragment-script"'
-                });
+            nock('https://fragment').get('/1').reply(200, 'hello', {
+                Link: '<http://link>; rel="stylesheet",<http://link2>; rel="fragment-script"'
+            });
 
             mockTemplate.returns(
                 '<fragment src="https://fragment/1"></fragment>'
@@ -803,12 +776,9 @@ describe('Tailor', () => {
         });
 
         it('should insert link to css from fragment link header, if fragment has "id" specified', done => {
-            nock('https://fragment')
-                .get('/1')
-                .reply(200, 'hello', {
-                    Link:
-                        '<http://link>; rel="stylesheet",<http://link2>; rel="fragment-script"'
-                });
+            nock('https://fragment').get('/1').reply(200, 'hello', {
+                Link: '<http://link>; rel="stylesheet",<http://link2>; rel="fragment-script"'
+            });
 
             mockTemplate.returns(
                 '<fragment id="tstid" src="https://fragment/1"></fragment>'
@@ -833,12 +803,9 @@ describe('Tailor', () => {
 
         // TODO: add async fragments support
         it('should use loadCSS for async fragments', done => {
-            nock('https://fragment')
-                .get('/1')
-                .reply(200, 'hello', {
-                    Link:
-                        '<http://link>; rel="stylesheet",<http://link2>; rel="fragment-script"'
-                });
+            nock('https://fragment').get('/1').reply(200, 'hello', {
+                Link: '<http://link>; rel="stylesheet",<http://link2>; rel="fragment-script"'
+            });
 
             mockTemplate.returns(
                 '<fragment async src="https://fragment/1"></fragment>'
@@ -862,12 +829,10 @@ describe('Tailor', () => {
         });
 
         it('should insert link to css and require js  from fragment x-amz-meta-link header', done => {
-            nock('https://fragment')
-                .get('/1')
-                .reply(200, 'hello', {
-                    'X-AMZ-META-LINK':
-                        '<http://link>; rel="stylesheet",<http://link2>; rel="fragment-script"'
-                });
+            nock('https://fragment').get('/1').reply(200, 'hello', {
+                'X-AMZ-META-LINK':
+                    '<http://link>; rel="stylesheet",<http://link2>; rel="fragment-script"'
+            });
 
             mockTemplate.returns(
                 '<fragment src="https://fragment/1"></fragment>'
@@ -950,9 +915,7 @@ describe('Tailor', () => {
     describe('Custom async fragments', () => {
         //TODO: add async fragments support
         it('should add async fragments from handleTag', done => {
-            nock('https://fragment')
-                .get('/1')
-                .reply(200, 'hello');
+            nock('https://fragment').get('/1').reply(200, 'hello');
 
             mockTemplate.returns('<delayed-fragment></delayed-fragment>');
             mockChildTemplate.returns('');
@@ -1204,7 +1167,7 @@ describe('Tailor', () => {
                 .get('/1')
                 .reply(200, 'hello')
                 .get('/2')
-                .socketDelay(101)
+                .delayConnection(101)
                 .reply(200, 'world');
 
             mockTemplate.returns(
@@ -1294,8 +1257,7 @@ describe('Tailor', () => {
             nock('https://fragment')
                 .get('/1')
                 .reply(200, 'hello maxAssetLinks default', {
-                    Link:
-                        '<http://link1>; rel="fragment-script", <http://link2>; rel="fragment-script", <http://link3>; rel="fragment-script"'
+                    Link: '<http://link1>; rel="fragment-script", <http://link2>; rel="fragment-script", <http://link3>; rel="fragment-script"'
                 });
 
             mockTemplate.returns(
@@ -1319,8 +1281,7 @@ describe('Tailor', () => {
             nock('https://fragment')
                 .get('/1')
                 .reply(200, 'hello multiple styles with default config', {
-                    Link:
-                        '<http://css1>; rel="stylesheet",<http://css2>; rel="stylesheet",<http://css3>; rel="stylesheet"'
+                    Link: '<http://css1>; rel="stylesheet",<http://css2>; rel="stylesheet",<http://css3>; rel="stylesheet"'
                 });
             mockTemplate.returns(
                 '<fragment src="https://fragment/1"></fragment>'
@@ -1402,13 +1363,11 @@ describe('Tailor', () => {
                 })
                 .get('/3')
                 .reply(200, 'hello exactly three async', {
-                    Link:
-                        '<http://link-c1>; rel="fragment-script", <http://link-c2>; rel="fragment-script", <http://link-c3>; rel="fragment-script",'
+                    Link: '<http://link-c1>; rel="fragment-script", <http://link-c2>; rel="fragment-script", <http://link-c3>; rel="fragment-script",'
                 })
                 .get('/4')
                 .reply(200, 'hello exactly three', {
-                    Link:
-                        '<http://link-d1>; rel="fragment-script", <http://link-d2>; rel="fragment-script", <http://link-d3>; rel="fragment-script",'
+                    Link: '<http://link-d1>; rel="fragment-script", <http://link-d2>; rel="fragment-script", <http://link-d3>; rel="fragment-script",'
                 });
 
             mockTemplate.returns(
@@ -1457,8 +1416,7 @@ describe('Tailor', () => {
             nock('https://fragment')
                 .get('/1')
                 .reply(200, 'hello multiple styles ', {
-                    Link:
-                        '<http://script-link>; rel="fragment-script",<http://css1>; rel="stylesheet",<http://css2>; rel="stylesheet",<http://css3>; rel="stylesheet"'
+                    Link: '<http://script-link>; rel="fragment-script",<http://css1>; rel="stylesheet",<http://css2>; rel="stylesheet",<http://css3>; rel="stylesheet"'
                 });
             mockTemplate.returns(
                 '<fragment src="https://fragment/1"></fragment>'
@@ -1488,8 +1446,7 @@ describe('Tailor', () => {
             nock('https://fragment')
                 .get('/1')
                 .reply(200, 'hello multiple styles async', {
-                    Link:
-                        '<http://link1>; rel="stylesheet",<http://link2>; rel="stylesheet",<http://link3>; rel="stylesheet",<http://link4>; rel="fragment-script"'
+                    Link: '<http://link1>; rel="stylesheet",<http://link2>; rel="stylesheet",<http://link3>; rel="stylesheet",<http://link4>; rel="fragment-script"'
                 });
 
             mockTemplate.returns(
@@ -1559,9 +1516,7 @@ describe('Tailor', () => {
         });
 
         it('process request + primary fragment error spans', done => {
-            nock('https://fragment')
-                .get('/1')
-                .reply(500);
+            nock('https://fragment').get('/1').reply(500);
 
             mockTemplate.returns(
                 '<fragment id="" primary src="https://fragment/1"></fragment>'
@@ -1588,9 +1543,7 @@ describe('Tailor', () => {
         });
 
         it('process request + fragment error', done => {
-            nock('https://fragment')
-                .get('/1')
-                .reply(500);
+            nock('https://fragment').get('/1').reply(500);
 
             mockTemplate.returns(
                 '<fragment id="test" src="https://fragment/1" timeout="200"></fragment>'
@@ -1618,12 +1571,9 @@ describe('Tailor', () => {
         let serverCustomOptions;
 
         beforeEach(() => {
-            nock('https://fragment')
-                .get('/1')
-                .reply(200, 'hello multiple', {
-                    Link:
-                        '<http://link1>; rel="stylesheet", <http://link2>; rel="fragment-script"'
-                });
+            nock('https://fragment').get('/1').reply(200, 'hello multiple', {
+                Link: '<http://link1>; rel="stylesheet", <http://link2>; rel="fragment-script"'
+            });
 
             mockTemplate.returns(
                 '<fragment id="tstID" src="https://fragment/1"></fragment>'
@@ -1644,8 +1594,7 @@ describe('Tailor', () => {
                         try {
                             assert.equal(attributes.id, 'tstID');
                             assert.deepEqual(headers, {
-                                link:
-                                    '<http://link1>; rel="stylesheet", <http://link2>; rel="fragment-script"'
+                                link: '<http://link1>; rel="stylesheet", <http://link2>; rel="fragment-script"'
                             });
                             assert.equal(index, 0);
                         } catch (e) {
@@ -1683,8 +1632,7 @@ describe('Tailor', () => {
                         try {
                             assert.equal(attributes.id, 'tstID');
                             assert.deepEqual(headers, {
-                                link:
-                                    '<http://link1>; rel="stylesheet", <http://link2>; rel="fragment-script"'
+                                link: '<http://link1>; rel="stylesheet", <http://link2>; rel="fragment-script"'
                             });
                             assert.equal(index, 0);
                         } catch (e) {

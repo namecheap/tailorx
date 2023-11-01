@@ -6,4 +6,3 @@ npm-debug.log
 src/pipe.min.js
 jsconfig.json
 /.idea
-package-lock.json

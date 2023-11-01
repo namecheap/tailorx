@@ -48,7 +48,7 @@ http.createServer((req, res) => {
         return res.end('');
     }
     tailor.requestHandler(req, res);
-}).listen(8080, function() {
+}).listen(8080, function () {
     console.log('Tailor server listening on port 8080');
 });
 
@@ -68,8 +68,9 @@ http.createServer((req, res) => {
         } else {
             return res.end(`
                 <div>Switcher ${currentNesting}</div>
-                <switcher nesting=${currentNesting -
-                    1} final-src=${final_src} ></switcher>
+                <switcher nesting=${
+                    currentNesting - 1
+                } final-src=${final_src} ></switcher>
             `);
         }
     }
@@ -79,6 +80,6 @@ http.createServer((req, res) => {
     // fragment content
     const name = urlObj.query.name;
     res.end(`<div>Fragment, name: ${name}</div>`);
-}).listen(8081, function() {
+}).listen(8081, function () {
     console.log('Fragment Server listening on port 8081');
 });
