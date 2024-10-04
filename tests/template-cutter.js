@@ -193,4 +193,42 @@ describe('TemplateCutter', () => {
             'TailorX can not find an ignored part 100 of the current template during restoring!'
         );
     });
+
+    it('should remove marked parts from the base template', () => {
+        const baseTemplate =
+            '<!DOCTYPE html>' +
+            '<html>' +
+            '<head>' +
+            '<meta charset="utf-8" />' +
+            '<meta name="viewport" content="width=device-width,initial-scale=1" />' +
+            '</head>' +
+            '<body>' +
+            '<!-- TailorX: Remove before parsing START -->' +
+            '<div id="remove-this">' +
+            '<slot name="remove-this"></slot>' +
+            '</div>' +
+            '<!-- TailorX: Remove before parsing END -->' +
+            '<div id="keep-this">' +
+            '<slot name="keep-this"></slot>' +
+            '</div>' +
+            '</body>' +
+            '</html>';
+
+        const expectedTemplate =
+            '<!DOCTYPE html>' +
+            '<html>' +
+            '<head>' +
+            '<meta charset="utf-8" />' +
+            '<meta name="viewport" content="width=device-width,initial-scale=1" />' +
+            '</head>' +
+            '<body>' +
+            '<div id="keep-this">' +
+            '<slot name="keep-this"></slot>' +
+            '</div>' +
+            '</body>' +
+            '</html>';
+
+        const result = templateCutter.remove(baseTemplate);
+        assert.equal(result, expectedTemplate);
+    });
 });
