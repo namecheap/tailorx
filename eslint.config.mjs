@@ -1,16 +1,12 @@
-'use strict';
+import prettier from 'eslint-plugin-prettier';
+import globals from 'globals';
+import babelParser from '@babel/eslint-parser';
 
-const babelParser = require('@babel/eslint-parser');
-const prettier = require('eslint-plugin-prettier');
-const globals = require('globals');
-
-/**
- * @type {import('eslint').Linter.Config}
- */
-module.exports = [
+export default [
     {
         ignores: [
-            'src/pipe.min.js',
+            'eslint.config.js',
+            'prettier.config.js',
             '**/coverage',
             'examples/fragment-performance/hooks.js',
             'examples/fragment-performance/test.js'
@@ -32,7 +28,7 @@ module.exports = [
             },
 
             parser: babelParser,
-            ecmaVersion: 5,
+            ecmaVersion: 6,
             sourceType: 'script',
 
             parserOptions: {
